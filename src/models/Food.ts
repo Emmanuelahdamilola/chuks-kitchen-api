@@ -4,9 +4,9 @@ export interface IFoodDocument extends Document {
     name: string;
     description: string;
     price: number;
-    image: string;
+    image_url: string;
     category: string;
-    isAvailable: boolean;
+    is_available: boolean;
 }
 
 const FoodSchema: Schema = new Schema({
@@ -38,12 +38,12 @@ const FoodSchema: Schema = new Schema({
         required: [true, "Category is required"],
         trim: true,
     },
-    image: {
+    image_url: {
         type: String,
         required: [true, "Image is required"],
         trim: true,
     },
-    isAvailable: {
+    is_available: {
         type: Boolean,
         default: true,
     },
