@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import { sendOTPEmail, sendResetPasswordEmail } from "@/utils/sendEmail";
 
 
 const generateOTP = (): string => {
@@ -39,14 +40,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         });
         return;
     }
-
-    // if (phone && !/^\d{10}$/.test(phone)){
-    //     res.status(400).json({
-    //         success: false,
-    //         message: "Invalid phone number"
-    //     });
-    //     return;
-    // }
 
     if (email){
         const emailExists = await User.findOne({email});
@@ -94,8 +87,9 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
         is_verified: false
     });
 
-    console.log(`OTP for ${name}: ${otp}`);
-    console.log(`OTP expires at: ${otp_expires}`);
+    if (email) {
+      await sendOTPEmail(name, email, otp);
+    };
 
 
     res.status(201).json({
@@ -246,8 +240,9 @@ export const resendOTP = async (req: Request, res: Response): Promise<void> => {
 
         await user.save();
 
-        console.log(`Resent OTP for ${user.name}: ${otp}`);
-        console.log(`Resent OTP expires at: ${otp_expires}`);
+        if (email) {
+            await sendResetPasswordEmail(user.name, email, otp);
+        };
 
         res.status(200).json({
             success: true,

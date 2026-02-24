@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-
-dotenv.config();
 
 export const config = {
     port: process.env.PORT || 5000,
@@ -13,5 +10,11 @@ export const config = {
         api_key: process.env.CLOUDINARY_API_KEY,
         api_secret: process.env.CLOUDINARY_API_SECRET,
     },
-    
+    mailer: {
+        user: process.env.MAILER_USER,
+        pass: process.env.MAILER_PASS,
+        from: process.env.MAILER_FROM,
+    },
 }
+
+export default config;
